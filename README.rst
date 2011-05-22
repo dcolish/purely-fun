@@ -2,7 +2,7 @@ Purely Fun!
 -----------
 
 This is a playground for me to experiment with Haskell and Ocaml while reading through
-Chris Okasaki's book `"Purely Functional Data Structures"`_. I am also using `Markus
+Chris Okasaki's book "`Purely Functional Data Structures`_". I am also using `Markus
 Mottl's work`_ as a reference to this endeavor. 
 
 All code is translation from SML examples originally written by Chris Okasaki
