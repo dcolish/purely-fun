@@ -15,12 +15,12 @@ show_tree t@(RB c a y z) = do
       B -> putStrLn $ (show y) ++ "[style=filled, fillcolor=black];"
     link a = case a of
       RB _ (RB _ _ x _) y (RB _ _ z _) -> do
-        putStrLn $ (show y) ++ " -> " ++ (show x)
-        putStrLn $ (show y) ++ " -> " ++ (show z)
+        putStrLn $ (show y) ++ " -> " ++ (show x) ++ "[headport=ne]"
+        putStrLn $ (show y) ++ " -> " ++ (show z) ++ "[headport=nw]"
       RB _ (RB _ _ x _) y E' -> do
-        putStrLn $ (show y) ++ " -> " ++ (show x)
+        putStrLn $ (show y) ++ " -> " ++ (show x) ++ "[headport=ne]"
       RB _ E' y (RB _ _ z _) -> do
-        putStrLn $ (show y) ++ " -> " ++ (show z)
+        putStrLn $ (show y) ++ " -> " ++ (show z) ++ "[headport=nw]"
       RB _ E' y E' -> return ()
       E' -> return ()
 
@@ -30,7 +30,7 @@ main = do
   putStrLn "node [fontcolor=white, nodesep=1];"
   putStrLn "repulsiveforce=\"1\";"
   putStrLn "smoothing=\"spring\";"
-  putStrLn "splines=\"true\";"
+  putStrLn "splines=\"false\";"
   seed <- newStdGen
   let nums = randomlist 100 seed
   show_tree $ build_tree nums E'
