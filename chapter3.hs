@@ -1,6 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module  Chapter3 (Chapter3(..)) where
+module  Chapter3 -- (Chapter3(insert))
+        where
   import Prelude hiding (tail, head)
   import Data.Typeable
   import Data.List (reverse)
@@ -104,9 +105,9 @@ module  Chapter3 (Chapter3(..)) where
       where (T _ x ts1, ts2) = removeMinTree ts
 
 
-  data Color = R | B
+  data Color = R | B deriving Show
   data RB a = E'
-            | RB Color (RB a) a (RB a)
+            | RB Color (RB a) a (RB a) deriving Show
 
   instance Emptiable RB where
     empty = E'

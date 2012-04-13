@@ -1,12 +1,10 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module  Chapter2 (Chapter2(..)) where
+module Chapter2 where
   import Prelude hiding (tail, head)
   import Data.Typeable
   import Control.Exception
 
-  data Chapter2 = Chapter2
-  
   instance Exception ListException
 
   class Emptiable s where
