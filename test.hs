@@ -1,14 +1,20 @@
+{-# LANGUAGE BangPatterns #-}
+
+import System.Environment
 import System.Random
 import Data.List hiding (insert)
 import Chapter3 (
+  deleteMin,
+  findMin,
   insert,
   member,
   Color(..),
   LeftistHeap(..),
   RB(..))
 
+
 randomlist :: Int -> StdGen -> [Int]
-randomlist n = take n . randomRs (1, 1000)
+randomlist n = take n . randomRs (1, 100000)
 
 
 show_tree E' = return ()
@@ -23,20 +29,20 @@ show_tree t@(RB c a y z) = do
       B -> putStrLn $ (show y) ++ "[style=filled, fillcolor=black];"
     link a = case a of
       RB _ (RB _ _ x _) y (RB _ _ z _) -> do
-        putStrLn $ (show y) ++ " -> " ++ (show x) ++ "[headport=ne]"
-        putStrLn $ (show y) ++ " -> " ++ (show z) ++ "[headport=nw]"
+        putStrLn $ (show y) ++ " -> " ++ (show x)
+        putStrLn $ (show y) ++ " -> " ++ (show z)
       RB _ (RB _ _ x _) y E' -> do
-        putStrLn $ (show y) ++ " -> " ++ (show x) ++ "[headport=ne]"
+        putStrLn $ (show y) ++ " -> " ++ (show x)
       RB _ E' y (RB _ _ z _) -> do
-        putStrLn $ (show y) ++ " -> " ++ (show z) ++ "[headport=nw]"
+        putStrLn $ (show y) ++ " -> " ++ (show z)
       RB _ E' y E' -> return ()
       E' -> return ()
 
 
 test_tree = do
-  seed <- newStdGen
-  let nums = randomlist 100 seed
-  show_tree $ build_tree nums E'
+  -- f <- getArgs
+  words <- readFile "/dev/stdin"
+  show_tree $ build_tree (lines words) E'
     where 
       build_tree [] t = t
       build_tree (x:xs) t = build_tree xs (insert x t)
@@ -65,11 +71,15 @@ show_heap h@(LeftistHeap r x a b) = do
 -- There will be duplicates, this might lead to some confusion in the visualization
 test_left_heap = do
   seed <- newStdGen
-  let nums = randomlist 100 seed
-  show_heap $ build_heap (nums) E
+  let nums = randomlist 1000000 seed
+  putStrLn $ show $ sort $ build_heap nums E
   where
     build_heap [] h = h
-    build_heap (x:xs) h = build_heap xs (insert x h)
+    -- build_heap (x:xs) h = build_heap xs (insert x h)
+    build_heap (x:xs) h = let !newH = insert x h in build_heap xs newH
+    sort E = []
+    -- sort h =  findMin h : sort (deleteMin h)
+    sort h = let !newH = deleteMin h in (findMin h) : sort newH
 
 
 show' fn = do
@@ -82,5 +92,21 @@ show' fn = do
   putStrLn "}"
 
 
+quicksort [] = []
+quicksort (x:xs) = (quicksort lesser) ++ [x] ++ (quicksort greater)
+  where
+    lesser = filter (< x) xs
+    greater = filter (> x) xs
+
+
+test_quick_sort = do
+  seed <- newStdGen
+  let nums = randomlist 1000000 seed
+  putStrLn $ show $ quicksort $ nums
+
+
 main = do
-  show' test_left_heap
+  -- test_quick_sort
+  -- show' 
+  test_left_heap
+  -- show' test_tree
